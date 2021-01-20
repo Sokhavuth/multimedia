@@ -1,11 +1,46 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
+<!--views/index.ejs-->
+<%- include('partials/head') %>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <script>
+      var fb_api = false;
+      window.fbAsyncInit = function(){
+        fb_api = true;
+      };
+    </script>
+    <div id="fb-root"></div>
+    <script async defer src="https://connect.facebook.net/km_KH/sdk.js#xfbml=1&version=v3.2"></script>
+
+    <section id="header">
+      <div class="top-menu-outer">
+        <div class="top-menu region">ទំព័រ​ដើម</div>
+      </div>
+      <div class="title-outer">
+        <h1 class="site-title region"><%= site_title %><img class="news" src="/images/newspaper.png" /><a><img class="tvlive" src="/images/livetv.png"/></a></h1>
+      </div>
+      <div class="main-menu-outer">
+      <nav class='main-menu region'>
+        <div class="topnav" id="myTopnav">
+          <a id="house" href="#home" class="active"><img src="/images/house.png" /></a>
+          <a href="#news">ព័ត៌មាន</a>
+          <a href="#contact">ទំនាក់ទំនង</a>
+          <a href="#about">អំពី​យើង​ខ្ញុំ</a>
+          <a href="javascript:void(0);" class="icon" onclick="mobielMenu()">
+            <i class="fa fa-bars"></i>
+          </a>
+        </div>
+      </nav>
+      </div>
+      <script>
+        function mobielMenu() {
+          var x = document.getElementById("myTopnav");
+          if (x.className === "topnav") {
+            x.className += " responsive";
+          } else {
+            x.className = "topnav";
+          }
+        }
+      </script>
+    </section>
+
   </body>
 </html>
