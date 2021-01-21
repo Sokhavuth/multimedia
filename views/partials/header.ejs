@@ -1,0 +1,36 @@
+<!--views/partials/header.ejs-->
+<section id="header">
+<div class="top-menu-outer">
+  <div class="top-menu region"><span><%= khDate %></span><span id="kh-clock" class="time">time</span></div>
+</div>
+<div class="title-outer">
+  <h1 class="site-title region">
+    <span><a href="/" ><%= site_title %></a></span>
+    <img class="news" src="/images/newspaper.png" />
+    <span><img class="tvlive" src="/images/livetv.png"/></span>
+  </h1>
+</div>
+<div class="main-menu-outer">
+  <nav class='main-menu region'>
+    <div class="topnav" id="myTopnav">
+      <a id="house" href="/" class="active"><img src="/images/house.png" /></a>
+      <a href="#news">ព័ត៌មាន</a>
+      <a href="#contact">ទំនាក់ទំនង</a>
+      <a href="#about">អំពី​យើង​ខ្ញុំ</a>
+      <a href="javascript:void(0);" class="icon" onclick="mobielMenu()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+  </nav>
+</div>
+<script>
+  function mobielMenu() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+      x.className += " responsive";
+    } else {
+      x.className = "topnav";
+    }
+  }
+</script>
+</section>
