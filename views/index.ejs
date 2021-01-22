@@ -6,7 +6,17 @@
 <link rel='stylesheet' href='/stylesheets/index.css' />
 <script src='/javascripts/utility.js'></script>
 
-<section id="panel"></section>
+<section class="panel region">
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script src="/javascripts/index.js"></script>
+
+  <div id="video-screen"></div>
+  <div id="navigation">
+    <img onclick="index.getVidContent(index.yt_prevPageToken)" src="/images/left.png" />
+    <img onclick="index.getVidContent()" src="/images/home.png" />
+    <img onclick="index.getVidContent(index.yt_nextPageToken)" src="/images/right.png" />
+  </div>
+</section>
 <section id="main"></section>
 
 <%- include('partials/footer.ejs') %>
