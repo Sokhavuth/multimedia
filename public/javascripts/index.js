@@ -57,7 +57,7 @@ class Index{
     
     for(var v in this.videoIds){
       html += `<div>`;
-      html += `<iframe src="https://www.youtube.com/embed/${this.videoIds[v]}"></iframe>`;
+      html += `<iframe allowfullscreen src="https://www.youtube.com/embed/${this.videoIds[v]}"></iframe>`;
       html += `</div>`;
     }
     $('.panel #video-screen').html(html);
