@@ -20,6 +20,7 @@ class Index{
   }
 
   getVidContent(pageToken) {
+    $('#navigation img').eq(1).attr('src', '/images/loading.gif')
     index.option = {
       "part": ["snippet,contentDetails"],
       "playlistId": index.kplaylistId,
@@ -60,6 +61,7 @@ class Index{
       html += `</div>`;
     }
     $('.panel #video-screen').html(html);
+    $('#navigation img').eq(1).attr('src', '/images/home.png')
   }
 
 }//end class
