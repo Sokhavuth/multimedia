@@ -1,10 +1,11 @@
 // routes/users.js
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const vdict = require('../config');
+const router = express.Router();
+const usersdb = require('../models/usersdb')
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.render('login', vdict);
 });
 
 module.exports = router;

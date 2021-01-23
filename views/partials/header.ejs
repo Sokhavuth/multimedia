@@ -17,6 +17,7 @@
       <a href="#news">ព័ត៌មាន</a>
       <a href="#contact">ទំនាក់ទំនង</a>
       <a href="#about">អំពី​យើង​ខ្ញុំ</a>
+      <a href="/users">ចូល​ក្នុង</a>
       <a href="javascript:void(0);" class="icon" onclick="mobielMenu()">
         <i class="fa fa-bars"></i>
       </a>
@@ -32,5 +33,15 @@
       x.className = "topnav";
     }
   }
+
+  var loc = (window.location).toString();
+  $('#myTopnav').children('a').each(function() {
+    if(loc == (this.href)){
+      $('.active').removeClass();
+      $(this).addClass("active"); 
+    }else{
+      $(this).removeClass("active"); 
+    }
+  });
 </script>
 </section>

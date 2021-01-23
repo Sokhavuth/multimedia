@@ -5,6 +5,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const mongoose = require('mongoose');
+const vdict = require('./config');
+const databaseAccess = vdict.databaseAccess;
+mongoose.connect(databaseAccess, {useNewUrlParser: true, useUnifiedTopology: true});
+
 process.env.TZ = "Asia/Phnom_Penh";
 
 var indexRouter = require('./routes/index');
