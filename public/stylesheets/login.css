@@ -1,0 +1,17 @@
+/* public/stylesheets/login.css */
+#login{
+  display:grid;
+  grid-template-columns: 30% auto;
+  grid-gap:5px;
+  max-width:450px;
+  margin:30px auto 0;
+  padding:20px;
+  background:lightgrey;
+  border-radius:4px;
+}
+#login span{
+  text-align:right;
+}
+#login input[type=submit]{
+  font:14px/1.5 OdorMeanChey;
+}

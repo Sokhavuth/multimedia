@@ -2,11 +2,14 @@
 class Usersdb{
   constructor(){
     const mongoose = require('mongoose');
+    const bcrypt = require('bcrypt');
 
     const usersSchema = new mongoose.Schema({
-      name: {type: String, required: true},
+      username: {type: String, required: true},
+      password: {type: String, required: true},
       email: {type: String, required: true},
-      role: {type: String, required: true}
+      role: {type: String, required: true},
+      date: {type: Date, required: true}
     });
 
     const users = mongoose.model('users', usersSchema);
@@ -15,7 +18,8 @@ class Usersdb{
     users.findOne(function (err, user){
       if (err) return console.error(err);
       if(!user){
-        const root = new users({name:'root', email:'root@multimedia.com', role:'Admin'});
+        const hash = bcrypt.hashSync('password', 12);
+        const root = new users({username:'root', password:hash, email:'root@multimedia.com', role:'Admin', date: new Date()});
         root.save(function (err, root){
           if (err) return console.error(err);
         });
@@ -25,6 +29,4 @@ class Usersdb{
 
 }//end class
 
-const usersdb = new Usersdb();
-
-module.exports = usersdb;
+module.exports = new Usersdb();

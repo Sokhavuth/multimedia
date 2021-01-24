@@ -1,12 +1,16 @@
 <!--views/index.ejs-->
 <%- include('partials/head') %>
+<link rel='stylesheet' href='/stylesheets/index.css' />
+<link rel='stylesheet' href='/stylesheets/login.css' />
+<script src='/javascripts/utility.js'></script>
 <%- include('partials/header') %>
 
-<link rel='stylesheet' href='/stylesheets/index.css' />
-<script src='/javascripts/utility.js'></script>
-
 <section class="login region">
-  
+  <form id="login" action="/users/login" method="post">
+    <span>ឈ្មោះ​អ្នក​ប្រើប្រាស់ៈ</span><input type="text" name="username" required />
+    <span>ពាក្យ​សំងាត់ៈ</span><input type="text" name="password" required />
+    <span></span><input type="submit" value="បញ្ជូន" />
+  </form>
 </section>
 
 <%- include('partials/footer.ejs') %>
