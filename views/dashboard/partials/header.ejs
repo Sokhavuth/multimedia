@@ -1,0 +1,20 @@
+<!--views/dashboard/partials/header.ejs-->
+<link rel="stylesheet" href="/stylesheets/dashboard/index.css" />
+
+<section id="header">
+<div id="header-outer">
+  <div class="header-inner region">
+    <h1><a href="/users/dashboard"><%= site_title %></a></h1>
+    <form id="search" action="/users/search" method='post'>
+      <select id="search-label" name="fsearch-label">
+        <option>ការផ្សាយ</option>
+        <option>ទំព័រ​ស្តាទិក</option>
+        <option>អ្នក​និពន្ធ</option>
+      </select>
+      <input type="text" name="querry" />
+      <input type="submit" value="បញ្ជូន"​ />
+    </form>
+    <div id="logout"><a href="/users/logout">ចេញ​ក្រៅ</a></div>
+  </div>
+</div>
+</section>

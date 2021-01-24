@@ -1,0 +1,83 @@
+/* public/stylesheets/dashboard/header.css */
+*{
+  padding:0;
+  margin:0;
+  box-sizing: border-box;
+}
+body{
+  font:14px Vidaloka, OdorMeanChey;
+}
+a{
+  color:darkblue;
+  text-decoration: none;
+}
+a:hover{
+  opacity:.7;
+}
+.region{
+  max-width: 1100px;
+  margin:0 auto;
+}
+#header-outer{
+  background: teal;
+  color:white;
+  padding:5px 0;
+}
+#header-outer h1 a{
+  color: white;
+  font: 26px/1.5 Limonf3;
+}
+.header-inner{
+  display:grid;
+  grid-template-columns:30% auto 20%;
+  align-items: center;
+}
+.header-inner form{
+  width: 100%;
+}
+.header-inner #logout{
+  text-align: right;
+}
+.header-inner #logout a{
+  color:white;
+}
+.header-inner form{
+  display: grid;
+  grid-template-columns: 20% auto 15%;
+}
+.header-inner form input, 
+.header-inner form select{
+  font:14px/1.5 Vidaloka, OdorMeanChey;
+  padding: 0 7px;
+}
+
+.main{
+  display:grid;
+  grid-template-columns:20% auto;
+  margin-top:30px;
+}
+.index #sidebar{
+  border-right:1px solid rgb(196, 196, 196);
+  padding-right:20px;
+}
+.index #sidebar div{
+  display:grid;
+  grid-template-columns:20% auto;
+  grid-gap:10px;
+  align-items: center;
+  font:18px/1.5 Oswald, Bayon;
+}
+.index #sidebar div img{
+  width: 100%;
+}
+.index #content{
+  padding-left: 20px;
+}
+#content .ck-editor__editable {
+  min-height: 335px;
+}
+
+.footer{
+  text-align:center;
+  
+}

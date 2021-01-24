@@ -28,8 +28,24 @@ class Usersdb{
     });
   }
 
-  checkUser(user){
-
+  checkUser(req, res, vdict){
+    const self = this;
+    this.users.findOne({username:req.body.username}, function (err, user){
+      if (err) return console.error(err);
+      if(user){
+        if(self.bcrypt.compareSync(req.body.password, user.password)){
+          req.session.user = user.username;
+          vdict.message = '';
+          res.redirect('/users/dashboard');
+        }else{
+          vdict.message = 'ពាក្យ​សំងាត់​មិនត្រឹមត្រូវ​ទេ';
+          res.redirect('/users/login');
+        }
+      }else{
+        vdict.message = 'ឈ្មោះ​អ្នក​ប្រើប្រាស់​មិន​ត្រឹមត្រូវ​ទេ';
+        res.redirect('/users/login');
+      }
+    });
   }
 
 }//end class
