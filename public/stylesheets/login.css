@@ -15,6 +15,9 @@
 #login span{
   text-align:right;
 }
+#login input[type=text]{
+  padding:0 5px;
+}
 #login input[type=submit]{
   font:14px/1.5 OdorMeanChey;
 }
