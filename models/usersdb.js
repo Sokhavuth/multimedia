@@ -14,6 +14,7 @@ class Usersdb{
 
     const users = mongoose.model('users', usersSchema);
     this.users = users;
+    this.bcrypt = bcrypt;
 
     users.findOne(function (err, user){
       if (err) return console.error(err);
@@ -25,6 +26,10 @@ class Usersdb{
         });
       }
     });
+  }
+
+  checkUser(user){
+
   }
 
 }//end class
