@@ -8,6 +8,7 @@
   display:grid;
   grid-template-columns: 30% auto;
   grid-gap:5px;
+  align-items: center;
   margin:30px auto 0;
   padding:20px;
   
@@ -17,7 +18,5 @@
 }
 #login input{
   padding:0 5px;
-}
-#login input[type=submit]{
-  font:14px/1.5 OdorMeanChey;
+  font:14px/1.75 Vidaloka, OdorMeanChey;
 }
