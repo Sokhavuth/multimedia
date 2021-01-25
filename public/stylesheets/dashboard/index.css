@@ -76,8 +76,16 @@ a:hover{
 #content .ck-editor__editable {
   min-height: 335px;
 }
+#content #items-wrapper{
+  display:grid;
+  grid-template-columns: auto 16.66% 16.66% 16.66% 16.66% 16.66%;
+}
+#content #items-wrapper input{
+  text-align: center;
+  padding: 0 5px;
+  font: 14px/1.75 Vidaloka, OdorMeanChey;
+}
 
 .footer{
   text-align:center;
-  
 }

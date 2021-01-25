@@ -67,8 +67,12 @@ a:hover{
   margin: 0 auto;
   width:120px;
 }
-#header .main-menu-outer{
+.main-menu-outer{
   background: black;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 .topnav {
   background-color:transparent;

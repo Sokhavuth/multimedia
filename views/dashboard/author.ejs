@@ -6,7 +6,18 @@
 <div class="main">
   <%- include('partials/sidebar') %>
   <div id="content">
-    <textarea name="fcontent" id="editor" ></textarea>
+    <form id="author" action="/users/author" method="post" >
+      <textarea name="info" id="editor" ></textarea>
+      <div id="items-wrapper">
+        <input type="submit" value="បញ្ជូន" />
+        <input readonly  onfocus="this.removeAttribute('readonly');" type="text" placeholder="ឈ្មោះ​អ្នកនិពន្ធ" name="username" required />
+        <input type='password' placeholder="ពាក្យ​សំងាត់" name="password" required />
+        <input type="email" placeholder="Email" name="email" required />
+        <input type='text' placeholder="តួនាទី" name="role" required />
+        <input type="date" value="<%= date %>" name="date" placeholder="DD/MM/YYY"  />
+      </div>
+    </form>
+    <div style='text-align:center;'><%= message %></div>
     <script src="/javascripts/ckeditor/config.js"></script>
   </div>
 </div>

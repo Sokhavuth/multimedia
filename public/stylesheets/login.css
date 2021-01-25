@@ -15,7 +15,7 @@
 #login span{
   text-align:right;
 }
-#login input[type=text]{
+#login input{
   padding:0 5px;
 }
 #login input[type=submit]{

@@ -25,8 +25,12 @@ class Utility{
     
     return ('ថ្ងៃ '+KhmerDays[day]+' ទី '+daym+' '+KhmerMonths[month]+' '+year);
   }
+
+  setDate(){
+    const today = new Date();
+    const date = today.toLocaleDateString('fr-CA');
+    return date;
+  }
 }//end class
 
-const utility = new Utility();
-
-module.exports = utility;
+module.exports = new Utility();
