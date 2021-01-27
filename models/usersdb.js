@@ -52,6 +52,19 @@ class Usersdb{
     });
   }
 
+  selectUser(amount, callback){
+    this.users.find().sort({date: -1, _id: -1}).limit(amount).then(users => {
+      return callback(users);
+    });
+  }
+
+  countUser(callback){
+    this.users.countDocuments({}, function(err, users){
+      if(err) return console.log(err);
+      return callback(users);
+    })
+  }
+
 }//end class
 
 module.exports = new Usersdb();

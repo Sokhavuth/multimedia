@@ -9,17 +9,35 @@
     <form id="author" action="/admin/author" method="post" >
       <textarea name="info" id="editor" ></textarea>
       <div id="items-wrapper">
-        <input type="submit" value="បញ្ជូន" />
+        <input type="submit" value="ចុះ​បញ្ជី" />
         <input type="text" placeholder="ឈ្មោះ​អ្នកនិពន្ធ" name="username" required />
         <input readonly  onfocus="this.removeAttribute('readonly');" type='password' placeholder="ពាក្យ​សំងាត់" name="password" required />
         <input type="email" placeholder="Email" name="email" required />
         <input type='text' placeholder="តួនាទី" name="role" required />
-        <input type="date" value="<%= date %>" name="date" placeholder="DD/MM/YYY"  />
+        <input type="date" value="<%= date %>" name="date" />
       </div>
     </form>
     <div style='text-align:center;'><%= message %></div>
     <script src="/javascripts/ckeditor/config.js"></script>
-  </div>
+
+    <div id="total-author">ចំនួន​អ្នក​និពន្ធសរុបៈ <%= count %></div>
+    <div id="post-list">
+      <% for(var v in authors){ %>
+        <div class="wrapper">
+          <a href="/author/<%- authors[v]._id %>"><img class="thumb" src="<%- thumbs[v] %>" /></a>
+          <div>
+            <a href="/author/<%- authors[v]._id %>"><%- authors[v].username %></a>
+            <div class='email'><%- authors[v].email %></div>
+            <span class="date"><%- (authors[v].date).toLocaleDateString('en-GB') %></span>
+          </div>
+          <div class="img-wrapper">
+            <a href="/admin/author/edit/<%- authors[v]._id %>"><img src="/images/edit.png" /></a>
+            <a href="/admin/author/delete/<%- authors[v]._id %>"><img src="/images/delete.png" /></a>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div><!--content-->
 </div>
 </section>
 
