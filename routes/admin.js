@@ -21,8 +21,11 @@ router.post('/login', function(req, res, next){
 });
 
 router.get('/dashboard', function(req, res, next){
-  const index = require('../controllers/dashboard/index');
-  index.getIndex(req, res);
+  if(req.session.user){
+    const index = require('../controllers/dashboard/index');
+    index.getIndex(req, res);
+  }else
+    res.redirect('/');
 });
 
 router.get('/logout', function(req, res, next){
@@ -36,13 +39,35 @@ router.get('/logout', function(req, res, next){
 });
 
 router.get('/author', function(req, res, next){
-  const author = require('../controllers/dashboard/author');
-  author.getAuthor(req, res);
+  if(req.session.user){
+    const author = require('../controllers/dashboard/author');
+    author.getAuthor(req, res);
+  }else
+    res.redirect('/admin/login');
 });
 
 router.post('/author', function(req, res, next){
-  const author = require('../controllers/dashboard/author')
-  author.postAuthor(req, res);
+  if(req.session.user){
+    const author = require('../controllers/dashboard/author');
+    author.postAuthor(req, res);
+  }else
+    res.redirect('/admin/login');
+});
+
+router.get('/author/edit/:authorId', function(req, res, next){
+  if(req.session.user){
+    const author = require('../controllers/dashboard/author');
+    author.getAuthor(req, res);
+  }else
+    res.redirect('/admin/login');
+});
+
+router.post('/author/edit/:authorId', function(req, res, next){
+  if(req.session.user){
+    const author = require('../controllers/dashboard/author');
+    author.updateAuthor(req, res);
+  }else
+    res.redirect('/admin/login');
 });
 
 module.exports = router;

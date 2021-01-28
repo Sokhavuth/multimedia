@@ -6,6 +6,7 @@
 <div class="main">
   <%- include('partials/sidebar') %>
   <div id="content">
+    <% if(!edited) {%>
     <form id="author" action="/admin/author" method="post" >
       <textarea name="info" id="editor" ></textarea>
       <div id="items-wrapper">
@@ -17,6 +18,19 @@
         <input type="date" value="<%= date %>" name="date" />
       </div>
     </form>
+    <% }else{ %>
+    <form id="author" action="/admin/author/edit/<%= edited.userid %>" method="post" >
+      <textarea name="info" id="editor" ><%- edited.info %></textarea>
+      <div id="items-wrapper">
+        <input type="submit" value="ចុះ​បញ្ជី" />
+        <input type="text" placeholder="ឈ្មោះ​អ្នកនិពន្ធ" name="username" value="<%= edited.username %>" required />
+        <input readonly  onfocus="this.removeAttribute('readonly');" type='password' placeholder="ពាក្យ​សំងាត់" name="password" required />
+        <input type="email" placeholder="Email" name="email" value="<%= edited.email %>" required />
+        <input type='text' placeholder="តួនាទី" name="role" value="<%= edited.role %>" required />
+        <input type="date" value="<%= edited.date.toLocaleDateString('fr-CA') %>" name="date" />
+      </div>
+    </form>
+    <% } %>
     <div style='text-align:center;'><%= message %></div>
     <script src="/javascripts/ckeditor/config.js"></script>
 
@@ -24,15 +38,15 @@
     <div id="post-list">
       <% for(var v in authors){ %>
         <div class="wrapper">
-          <a href="/author/<%- authors[v]._id %>"><img class="thumb" src="<%- thumbs[v] %>" /></a>
+          <a href="/author/<%- authors[v].userid %>"><img class="thumb" src="<%- thumbs[v] %>" /></a>
           <div>
-            <a href="/author/<%- authors[v]._id %>"><%- authors[v].username %></a>
+            <a href="/author/<%- authors[v].userid %>"><%- authors[v].username %></a>
             <div class='email'><%- authors[v].email %></div>
             <span class="date"><%- (authors[v].date).toLocaleDateString('en-GB') %></span>
           </div>
           <div class="img-wrapper">
-            <a href="/admin/author/edit/<%- authors[v]._id %>"><img src="/images/edit.png" /></a>
-            <a href="/admin/author/delete/<%- authors[v]._id %>"><img src="/images/delete.png" /></a>
+            <a href="/admin/author/edit/<%- authors[v].userid %>"><img src="/images/edit.png" /></a>
+            <a href="/admin/author/delete/<%- authors[v].userid %>"><img src="/images/delete.png" /></a>
           </div>
         </div>
       <% } %>
