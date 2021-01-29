@@ -86,14 +86,23 @@ class Author{
       }else{
         self.emailCheck(req.body.email)
           .then(async function (result) {
-            console.log(result);
             if(result){
-              data.author = await self.usersdb.updateUser(req);
-              data.message = `ទិន្នន័យ​អ្នក​និពន្ធ​ ${data.author.username} ត្រូវ​បាន​កែ​តំរូវ​`;
-              data.authors = await self.usersdb.selectUser(self.vdict.dashboardLimit);
-              data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
-              data.count = await self.usersdb.countUser();   
-              res.render('dashboard/author', data);
+              if(req.session.user.role === "Admin"){
+                data.author = await self.usersdb.updateUser(req);
+                data.message = `ទិន្នន័យ​អ្នក​និពន្ធ​ ${data.author.username} ត្រូវ​បាន​កែ​តំរូវ​`;
+                data.authors = await self.usersdb.selectUser(self.vdict.dashboardLimit);
+                data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
+                data.count = await self.usersdb.countUser();   
+                res.render('dashboard/author', data);
+              }else if(req.session.user.userid === user.userid){
+                console.log(req.session.user.userid === user.userid);
+                data.author = await self.usersdb.updateUser(req);
+                data.message = `ទិន្នន័យ​អ្នក​និពន្ធ​ ${data.author.username} ត្រូវ​បាន​កែ​តំរូវ​`;
+                data.authors = await self.usersdb.selectUser(self.vdict.dashboardLimit);
+                data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
+                data.count = await self.usersdb.countUser();   
+                res.render('dashboard/author', data);
+              }
             }
           })
           .catch(async function (err) {
@@ -109,7 +118,7 @@ class Author{
       data.authors = await this.usersdb.selectUser(self.vdict.dashboardLimit);
       data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
       data.count = await self.usersdb.countUser();
-      data.message = 'មាន​តែ Administrator ឬ​សមី​ខ្លូន​ទេ ដែល​អាច​ដូរ​ទិន្នន័យ​​និពន្ធ​បាន​';
+      data.message = 'មាន​តែ Administrator ឬ​សមី​ខ្លូន​ទេ ដែល​អាច​ដូរ​ទិន្នន័យអ្នក​​និពន្ធ​បាន​';
       res.render('dashboard/author', data);
     }
   }
