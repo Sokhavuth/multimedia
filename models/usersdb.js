@@ -10,7 +10,7 @@ class Usersdb{
       password: {type: String, required: true},
       email: {type: String, required: true},
       role: {type: String, required: true},
-      info: {type: String, required: true},
+      info: {type: String, required: false},
       date: {type: Date, required: true}
     });
 
@@ -38,56 +38,37 @@ class Usersdb{
     });
   }
 
-  checkEmail(req, callback){
-    this.users.findOne({email:req.body.email}, function (err, user){
-      if (err) return console.error(err);
-      return callback(user);
-    });
+  async checkEmail(req){
+    return await this.users.findOne({email:req.body.email});
   }
 
-  insertUser(req, callback){
+  async insertUser(req){
     const hash = this.bcrypt.hashSync(req.body.password, 12);
     const id = (new Date()).getTime().toString(36) + Math.random().toString(36).slice(2);
     const user = new (this.users)({userid:id, username:req.body.username, password:hash, email:req.body.email, role:req.body.role, info:req.body.info, date: new Date(req.body.date)});
-    user.save(function (err, user){
-      if (err) return callback(false, err);
-      return callback(user, false)
-    });
+    return await user.save();
   }
 
-  selectUser(amount=5, callback, id=false){
+  async selectUser(amount=5, id=false){
     if(id){
-      this.users.findOne({userid: id}, function(err, user){
-        if (err) return console.error(err);
-        return callback(user);
-      });
+      return await this.users.findOne({userid: id});
     }else{
-      this.users.find().sort({date: -1, _id: -1}).limit(amount).then(users => {
-        return callback(users);
-      });
+      return await this.users.find().sort({date: -1, _id: -1}).limit(amount);
     }
   }
 
-  countUser(callback){
-    this.users.countDocuments({}, function(err, users){
-      if(err) return console.log(err);
-      return callback(users);
-    })
+  async countUser(){
+    return await this.users.countDocuments({});
   }
 
-  updateUser(req, callback){
-    this.users.findOne({userid:req.params.authorId}, function (err, user){
-      if (err) return console.error(err);
-      user.username = req.body.username;
-      user.email = req.body.email;
-      user.role = req.body.role;
-      user.info = req.body.info;
-      user.date = new Date(req.body.date);
-      user.save(function (err, user){
-        if (err) return console.error(err);
-        return callback(user);
-      });
-    });
+  async updateUser(req){
+    const user = await this.users.findOne({userid:req.params.authorId});
+    user.username = req.body.username;
+    user.email = req.body.email;
+    user.role = req.body.role;
+    user.info = req.body.info;
+    user.date = new Date(req.body.date);
+    return await user.save();
   }
 
 }//end class

@@ -9,152 +9,109 @@ class Author{
     this.bcrypt = require('bcryptjs');
   }
 
-  getAuthor(req, res){
+  async getAuthor(req, res){
     const self = this;
-    if(req.session.user){
-      const data = this.deepcopy(this.vdict);
-      data.site_title = 'ទំព័រ​អ្នក​និពន្ធ';
-      data.date = this.utility.setDate();
-      this.usersdb.selectUser(this.vdict.dashboardLimit, function(authors){
-        data.authors = authors;
-        data.thumbs = self.utility.getThumbUrl(authors, 'author');
-        self.usersdb.countUser(function(count){
-          data.count = count;
-          if(req.params.authorId){
-            self.usersdb.selectUser(self.vdict.dashboardLimit, function(author){
-              data.edited = author;
-              res.render('dashboard/author', data);
-            }, req.params.authorId);
-          }else
+    const data = this.deepcopy(this.vdict);
+    data.site_title = 'ទំព័រ​អ្នក​និពន្ធ';
+    data.date = this.utility.setDate();
+    data.authors = await this.usersdb.selectUser(this.vdict.dashboardLimit); 
+    data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
+    data.count = await self.usersdb.countUser();
+          
+    if(req.params.authorId){
+      data.edited = await self.usersdb.selectUser(self.vdict.dashboardLimit, req.params.authorId);
+      res.render('dashboard/author', data);
+    }else
+      res.render('dashboard/author', data);
+  }
+
+  async postAuthor(req, res){
+    const self = this;
+    const data = this.deepcopy(this.vdict);
+    data.site_title = 'ទំព័រ​អ្នក​និពន្ធ';
+    data.date = this.utility.setDate();
+  
+    if(req.session.user.role == 'Admin'){
+      const user = await this.usersdb.checkEmail(req);
+      if(user){
+        data.authors = await self.usersdb.selectUser(self.vdict.dashboardLimit);
+        data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
+        data.count = await self.usersdb.countUser();
+        data.message = 'Email នេះ​មាន​គេ​ប្រើ​ប្រាស់​ហើយ​';
+        res.render('dashboard/author', data);
+      }else{
+        self.emailCheck(req.body.email)
+          .then(async function (result) {
+            if(result){
+              const user = await self.usersdb.insertUser(req);
+              data.authors = await self.usersdb.selectUser(self.vdict.dashboardLimit); 
+              data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
+              data.count = await self.usersdb.countUser();
+              data.message = `អ្នក​និពន្ធ​ ${user.username} ត្រូវ​បានចុះ​បញ្ជី​រួច​ហើយ`;
+              res.render('dashboard/author', data);  
+            }
+          }).catch(async function (err) {
+            data.authors = await self.usersdb.selectUser(self.vdict.dashboardLimit);
+            data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
+            data.count = await self.usersdb.countUser();
+            data.message = 'Email នេះ​មិន​ត្រឹមត្រូវ​ទេ';
             res.render('dashboard/author', data);
-        });
-      });
+          });
+      }
+
     }else{
-      res.redirect('/admin/login');
+      data.authors = await this.usersdb.selectUser(self.vdict.dashboardLimit);
+      data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
+      data.count = await self.usersdb.countUser();
+      data.message = 'មាន​តែ Administrator ទេ ​ដែល​អាច​ចុះ​បញ្ជី​អ្នក​និពន្ធ​បាន​';
+      res.render('dashboard/author', data);
     }
   }
 
-  postAuthor(req, res){
+  async updateAuthor(req, res){
     const self = this;
     const data = this.deepcopy(this.vdict);
     data.site_title = 'ទំព័រ​អ្នក​និពន្ធ';
     data.date = this.utility.setDate();
     
-    if(req.session.user.role == 'Admin'){
-      this.usersdb.checkEmail(req, function(user){
-        if(user){
-          self.usersdb.selectUser(self.vdict.dashboardLimit, function(authors){
-            data.authors = authors;
-            data.thumbs = self.utility.getThumbUrl(authors, 'author');
-            self.usersdb.countUser(function(count){
-              data.count = count;
-              data.message = 'Email នេះ​មាន​គេ​ប្រើ​ប្រាស់​ហើយ​';
-              res.render('dashboard/author', data);
-            });
-          });
-        }else{
-          self.emailCheck(req.body.email)
-            .then(function (result) {
-              if(result){
-                self.usersdb.insertUser(req, function(user, err){
-                  if(!err){
-                    self.usersdb.selectUser(self.vdict.dashboardLimit, function(authors){
-                      data.authors = authors;
-                      data.thumbs = self.utility.getThumbUrl(authors, 'author');
-                      self.usersdb.countUser(function(count){
-                        data.count = count;
-                        data.message = `អ្នក​និពន្ធ​ ${user.username} ត្រូវ​បានចុះ​បញ្ជី​រួច​ហើយ`;
-                        res.render('dashboard/author', data);
-                      });
-                    });
-                  }else{
-                    self.usersdb.selectUser(self.vdict.dashboardLimit, function(authors){
-                      data.authors = authors;
-                      data.thumbs = self.utility.getThumbUrl(authors, 'author');
-                      self.usersdb.countUser(function(count){
-                        data.message = err;
-                        data.count = count;
-                        res.render('dashboard/author', data);
-                      });
-                    });
-                  }
-                });
-              }
-            })
-            .catch(function (err) {
-              self.usersdb.selectUser(self.vdict.dashboardLimit, function(authors){
-                data.authors = authors;
-                data.thumbs = self.utility.getThumbUrl(authors, 'author');
-                self.usersdb.countUser(function(count){
-                  data.count = count;
-                  data.message = 'Email នេះ​មិន​ត្រឹមត្រូវ​ទេ';
-                  res.render('dashboard/author', data);
-                });
-              });
-            });
-        }
-      });
-    }else{
-      this.usersdb.selectUser(self.vdict.dashboardLimit, function(authors){
-        data.authors = authors;
-        data.thumbs = self.utility.getThumbUrl(authors, 'author');
-        self.usersdb.countUser(function(count){
-          data.count = count;
-          data.message = 'មាន​តែ Administrator ទេ ​ដែល​អាច​ចុះ​បញ្ជី​អ្នក​និពន្ធ​បាន​';
-          res.render('dashboard/author', data);
-        });
-      });
-    }
-  }
-
-  updateAuthor(req, res){
-    const self = this;
-    const data = this.deepcopy(this.vdict);
-    data.site_title = 'ទំព័រ​អ្នក​និពន្ធ';
-    data.date = this.utility.setDate();
-
-    this.usersdb.checkEmail(req, function(user){
-      if(user.userid !== req.params.authorId){
-        self.usersdb.selectUser(self.vdict.dashboardLimit, function(authors){
-          data.authors = authors;
-          data.thumbs = self.utility.getThumbUrl(authors, 'author');
-          self.usersdb.countUser(function(count){
-            data.count = count;
-            data.message = 'Email នេះ​មាន​គេ​ប្រើ​ប្រាស់​ហើយ​';
-            res.render('dashboard/author', data);
-          });
-        });
+    if((req.session.user.role === "Admin") || (req.session.user.userid === req.params.authorId)){
+      const user = await this.usersdb.checkEmail(req);
+      
+      if(user && (req.params.authorId != user.userid)){
+        data.authors = await self.usersdb.selectUser(self.vdict.dashboardLimit);
+        data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
+        data.count = await self.usersdb.countUser();
+        data.message = 'Email នេះ​មាន​គេ​ប្រើ​ប្រាស់​ហើយ​';
+        res.render('dashboard/author', data);
       }else{
         self.emailCheck(req.body.email)
-          .then(function (result) {
+          .then(async function (result) {
+            console.log(result);
             if(result){
-              self.usersdb.updateUser(req, function(user){
-                data.author = user;
-                data.message = `ទិន្នន័យ​អ្នក​និពន្ធ​ ${user.username} ត្រូវ​បាន​កែ​តំរូវ​`;
-                self.usersdb.selectUser(self.vdict.dashboardLimit, function(authors){
-                  data.authors = authors;
-                  data.thumbs = self.utility.getThumbUrl(authors, 'author');
-                  self.usersdb.countUser(function(count){
-                    data.count = count;
-                    res.render('dashboard/author', data);
-                  });
-                });
-              });
+              data.author = await self.usersdb.updateUser(req);
+              data.message = `ទិន្នន័យ​អ្នក​និពន្ធ​ ${data.author.username} ត្រូវ​បាន​កែ​តំរូវ​`;
+              data.authors = await self.usersdb.selectUser(self.vdict.dashboardLimit);
+              data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
+              data.count = await self.usersdb.countUser();   
+              res.render('dashboard/author', data);
             }
           })
-          .catch(function (err) {
-            self.usersdb.selectUser(self.vdict.dashboardLimit, function(authors){
-              data.authors = authors;
-              data.thumbs = self.utility.getThumbUrl(authors, 'author');
-              self.usersdb.countUser(function(count){
-                data.count = count;
-                data.message = 'Email នេះ​មិន​ត្រឹមត្រូវ​ទេ';
-                res.render('dashboard/author', data);
-              });
-            });
+          .catch(async function (err) {
+            data.authors = await self.usersdb.selectUser(self.vdict.dashboardLimit);
+            data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
+            data.count = await self.usersdb.countUser();
+            data.message = 'Email នេះ​មិន​ត្រឹមត្រូវ​ទេ';
+            res.render('dashboard/author', data);
           });
       }
-    });
+    
+   }else{
+      data.authors = await this.usersdb.selectUser(self.vdict.dashboardLimit);
+      data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
+      data.count = await self.usersdb.countUser();
+      data.message = 'មាន​តែ Administrator ឬ​សមី​ខ្លូន​ទេ ដែល​អាច​ដូរ​ទិន្នន័យ​​និពន្ធ​បាន​';
+      res.render('dashboard/author', data);
+    }
   }
 
 }//end class
