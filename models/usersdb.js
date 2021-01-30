@@ -49,9 +49,11 @@ class Usersdb{
     return await user.save();
   }
 
-  async selectUser(amount=5, id=false){
+  async selectUser(amount=5, id=false, page=0){
     if(id){
       return await this.users.findOne({userid: id});
+    }else if(page){
+      return await this.users.find().skip(amount * page).sort({date: -1, _id: -1}).limit(amount);
     }else{
       return await this.users.find().sort({date: -1, _id: -1}).limit(amount);
     }
@@ -68,7 +70,17 @@ class Usersdb{
     user.role = req.body.role;
     user.info = req.body.info;
     user.date = new Date(req.body.date);
+    if(req.body.password !== "oldpassword"){
+      const hash = this.bcrypt.hashSync(req.body.password, 12);
+      user.password = hash;
+    }
     return await user.save();
+  }
+
+  async deleteUser(req){
+    const user = await this.users.findOne({userid:req.params.authorId});
+    await this.users.deleteOne({userid:user.userid});
+    return user;
   }
 
 }//end class

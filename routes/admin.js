@@ -69,4 +69,20 @@ router.post('/author/edit/:authorId', function(req, res, next){
     res.redirect('/admin/login');
 });
 
+router.get('/author/delete/:authorId', function(req, res, next){
+  if(req.session.user){
+    const author = require('../controllers/dashboard/author');
+    author.deleteAuthor(req, res);
+  }else
+    res.redirect('/admin/login');
+});
+
+router.get('/author/load/:page', function(req, res, next){
+  if(req.session.user){
+    const author = require('../controllers/dashboard/author');
+    author.loadAuthor(req, res);
+  }else
+    res.redirect('/admin/login');
+});
+
 module.exports = router;

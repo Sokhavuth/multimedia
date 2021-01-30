@@ -2,6 +2,9 @@
 <%- include('partials/head') %>
 <%- include('partials/header') %>
 
+<link rel='stylesheet' href="/stylesheets/dashboard/author.css" />
+<script src="/javascripts/dashboard/author.js"></script>
+
 <section class="index region">
 <div class="main">
   <%- include('partials/sidebar') %>
@@ -24,7 +27,7 @@
       <div id="items-wrapper">
         <input type="submit" value="ចុះ​បញ្ជី" />
         <input type="text" placeholder="ឈ្មោះ​អ្នកនិពន្ធ" name="username" value="<%= edited.username %>" required />
-        <input readonly  onfocus="this.removeAttribute('readonly');" type='password' placeholder="ពាក្យ​សំងាត់" name="password" required />
+        <input readonly  onfocus="this.removeAttribute('readonly');" type='password' value="oldpassword" placeholder="ពាក្យ​សំងាត់" name="password" required />
         <input type="email" placeholder="Email" name="email" value="<%= edited.email %>" required />
         <input type='text' placeholder="តួនាទី" name="role" value="<%= edited.role %>" required />
         <input type="date" value="<%= edited.date.toLocaleDateString('fr-CA') %>" name="date" />
@@ -50,7 +53,8 @@
           </div>
         </div>
       <% } %>
-    </div>
+    </div><!--post-list-->
+    <div id="load-more"><img onclick="author.loadAuthor()" src="/images/load-more.png" /></div>
   </div><!--content-->
 </div>
 </section>

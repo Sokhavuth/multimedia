@@ -87,15 +87,7 @@ class Author{
         self.emailCheck(req.body.email)
           .then(async function (result) {
             if(result){
-              if(req.session.user.role === "Admin"){
-                data.author = await self.usersdb.updateUser(req);
-                data.message = `ទិន្នន័យ​អ្នក​និពន្ធ​ ${data.author.username} ត្រូវ​បាន​កែ​តំរូវ​`;
-                data.authors = await self.usersdb.selectUser(self.vdict.dashboardLimit);
-                data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
-                data.count = await self.usersdb.countUser();   
-                res.render('dashboard/author', data);
-              }else if(req.session.user.userid === user.userid){
-                console.log(req.session.user.userid === user.userid);
+              if((req.session.user.role === "Admin") || (req.session.user.userid === user.userid)){
                 data.author = await self.usersdb.updateUser(req);
                 data.message = `ទិន្នន័យ​អ្នក​និពន្ធ​ ${data.author.username} ត្រូវ​បាន​កែ​តំរូវ​`;
                 data.authors = await self.usersdb.selectUser(self.vdict.dashboardLimit);
@@ -121,6 +113,29 @@ class Author{
       data.message = 'មាន​តែ Administrator ឬ​សមី​ខ្លូន​ទេ ដែល​អាច​ដូរ​ទិន្នន័យអ្នក​​និពន្ធ​បាន​';
       res.render('dashboard/author', data);
     }
+  }
+
+  async deleteAuthor(req, res){
+    const self = this;
+    const data = this.deepcopy(this.vdict);
+    data.site_title = 'ទំព័រ​អ្នក​និពន្ធ';
+    data.date = this.utility.setDate();
+
+    if(req.session.user.role === "Admin"){
+      const user = await self.usersdb.deleteUser(req);
+      data.authors = await this.usersdb.selectUser(self.vdict.dashboardLimit);
+      data.thumbs = self.utility.getThumbUrl(data.authors, 'author');
+      data.count = await self.usersdb.countUser();
+      data.message = `អ្នក​និពន្ធឈ្មោះ ${user.username} ត្រូវ​បាន​លុបចេញ​ពី​បញ្ជី`;
+      res.render('dashboard/author', data);
+    }
+  }
+
+  async loadAuthor(req, res){
+    const self = this;
+    const authors = await this.usersdb.selectUser(self.vdict.dashboardLimit, false, req.params.page);
+    const thumbs = self.utility.getThumbUrl(authors, 'author');
+    res.json({authors:authors, thumbs:thumbs});
   }
 
 }//end class

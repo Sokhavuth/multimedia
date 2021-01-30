@@ -1,0 +1,60 @@
+/* stylesheets/dashboard/author.css */
+#content .ck-editor__editable {
+  min-height: 335px;
+}
+#content #items-wrapper{
+  display:grid;
+  grid-template-columns: auto 16.66% 16.66% 16.66% 16.66% 16.66%;
+}
+#content #items-wrapper input{
+  text-align: center;
+  padding: 0 5px;
+  font: 14px/1.75 Vidaloka, OdorMeanChey;
+}
+#content #items-wrapper input[type=submit]:hover{
+  cursor:pointer;
+}
+#content #total-author{
+  text-align:center;
+  margin-top:30px;
+  background:#f1f1f1;
+  border:1px solid rgb(196, 196, 196);
+  padding:3px;
+}
+#content #post-list .wrapper{
+  border: 1px solid rgb(196, 196, 196);
+  margin-top: 10px;
+  padding:5px;
+  border-radius:3px;
+  display:grid;
+  grid-template-columns: 70px auto 150px;
+  grid-gap:10px;
+  align-items: center;
+}
+#content #post-list .wrapper:hover .img-wrapper img{
+  visibility: visible;
+}
+#content #post-list .wrapper .thumb{
+  width:100%;
+  float:left;
+  border-radius:50%;
+}
+#content #post-list .wrapper .img-wrapper{
+  text-align:right;
+}
+#content #post-list .wrapper .img-wrapper img{
+  width:30px;
+  margin: 0 2px;
+  visibility:hidden;
+}
+#load-more{
+  text-align:center;
+  margin-top:10px;
+  padding:10px 0 5px;
+  background:#f1f1f1;
+  border: 1px solid rgb(196, 196, 196);
+}
+#load-more img:hover{
+  opacity:.5;
+  cursor:pointer;
+}
