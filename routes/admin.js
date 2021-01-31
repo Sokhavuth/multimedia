@@ -37,52 +37,7 @@ router.get('/logout', function(req, res, next){
   }
 });
 
-router.get('/author', function(req, res, next){
-  if(req.session.user){
-    const author = require('../controllers/dashboard/author');
-    author.getAuthor(req, res);
-  }else
-    res.redirect('/admin/login');
-});
-
-router.post('/author', function(req, res, next){
-  if(req.session.user){
-    const author = require('../controllers/dashboard/author');
-    author.postAuthor(req, res);
-  }else
-    res.redirect('/admin/login');
-});
-
-router.get('/author/edit/:authorId', function(req, res, next){
-  if(req.session.user){
-    const author = require('../controllers/dashboard/author');
-    author.getAuthor(req, res);
-  }else
-    res.redirect('/admin/login');
-});
-
-router.post('/author/edit/:authorId', function(req, res, next){
-  if(req.session.user){
-    const author = require('../controllers/dashboard/author');
-    author.updateAuthor(req, res);
-  }else
-    res.redirect('/admin/login');
-});
-
-router.get('/author/delete/:authorId', function(req, res, next){
-  if(req.session.user){
-    const author = require('../controllers/dashboard/author');
-    author.deleteAuthor(req, res);
-  }else
-    res.redirect('/admin/login');
-});
-
-router.get('/author/load/:page', function(req, res, next){
-  if(req.session.user){
-    const author = require('../controllers/dashboard/author');
-    author.loadAuthor(req, res);
-  }else
-    res.redirect('/admin/login');
-});
+const author = require('./dashboard/author');
+router.use('/author', author);
 
 module.exports = router;
